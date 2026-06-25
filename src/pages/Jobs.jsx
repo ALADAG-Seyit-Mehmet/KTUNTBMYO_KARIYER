@@ -7,6 +7,7 @@ const Jobs = () => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [userProfile, setUserProfile] = useState(null);
   
   // Application Modal State
   const [selectedJob, setSelectedJob] = useState(null);
@@ -18,7 +19,22 @@ const Jobs = () => {
 
   useEffect(() => {
     fetchJobs();
+    fetchUserProfile();
   }, []);
+
+  const fetchUserProfile = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) {
+      const { data } = await supabase
+        .from('profiles')
+        .select('user_type')
+        .eq('id', session.user.id)
+        .single();
+      if (data) {
+        setUserProfile(data);
+      }
+    }
+  };
 
   const fetchJobs = async () => {
     try {
@@ -117,7 +133,9 @@ const Jobs = () => {
                   {job.department && <p><i className="fa-solid fa-building-columns" style={{marginRight: '5px'}}></i> {job.department}</p>}
                 </div>
                 <p style={{ fontSize: '0.9em', marginBottom: '20px' }}>{job.description}</p>
-                <button className="btn-submit" onClick={() => handleApplyClick(job)}>Başvur</button>
+                {(!userProfile || userProfile.user_type !== 'firma') && (
+                  <button className="btn-submit" onClick={() => handleApplyClick(job)}>Başvur</button>
+                )}
               </div>
             ))}
           </div>
