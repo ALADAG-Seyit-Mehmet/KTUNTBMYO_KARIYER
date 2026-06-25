@@ -86,28 +86,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section style={{ padding: '60px 0', background: 'var(--bg-color)' }}>
-        <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '30px' }}>
-            <div className="job-card" style={{ textAlign: 'center', padding: '30px' }}>
-              <i className="fa-solid fa-paper-plane" style={{ fontSize: '3rem', color: 'var(--primary-red)', marginBottom: '20px' }}></i>
-              <h3 style={{ marginBottom: '15px', fontSize: '1.3rem' }}>Kolay Başvuru</h3>
-              <p style={{ color: 'var(--text-muted)' }}>Profilinizi bir kez oluşturun, size uygun tüm iş ve staj fırsatlarına tek tıkla hemen başvurun.</p>
-            </div>
-            <div className="job-card" style={{ textAlign: 'center', padding: '30px' }}>
-              <i className="fa-solid fa-handshake" style={{ fontSize: '3rem', color: 'var(--primary-red)', marginBottom: '20px' }}></i>
-              <h3 style={{ marginBottom: '15px', fontSize: '1.3rem' }}>Güvenilir Firmalar</h3>
-              <p style={{ color: 'var(--text-muted)' }}>Sektörün öncü ve onaylanmış firmalarının özel ilanlarına doğrudan erişim sağlayın.</p>
-            </div>
-            <div className="job-card" style={{ textAlign: 'center', padding: '30px' }}>
-              <i className="fa-solid fa-graduation-cap" style={{ fontSize: '3rem', color: 'var(--primary-red)', marginBottom: '20px' }}></i>
-              <h3 style={{ marginBottom: '15px', fontSize: '1.3rem' }}>KTÜN Farkı</h3>
-              <p style={{ color: 'var(--text-muted)' }}>Sadece Konya Teknik Üniversitesi öğrencilerine ve mezunlarına açık, ayrıcalıklı bir ekosistem.</p>
-            </div>
-          </div>
-        </div>
-      </section>
+
 
       {/* Recent Jobs Section */}
       <section style={{ padding: '60px 0' }}>
