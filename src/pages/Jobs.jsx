@@ -113,6 +113,7 @@ const Jobs = () => {
                 <div style={{ margin: '15px 0', fontSize: '0.9em', color: '#ccc' }}>
                   <p><i className="fa-solid fa-briefcase"></i> {job.type}</p>
                   <p><i className="fa-solid fa-location-dot"></i> {job.location}</p>
+                  {job.department && <p><i className="fa-solid fa-building-columns" style={{marginRight: '5px'}}></i> {job.department}</p>}
                 </div>
                 <p style={{ fontSize: '0.9em', marginBottom: '20px' }}>{job.description}</p>
                 <button className="btn-submit" onClick={() => handleApplyClick(job)}>Başvur</button>

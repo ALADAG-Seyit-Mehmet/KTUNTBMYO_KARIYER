@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
+import Select from 'react-select';
+import { departments, customSelectStyles } from '../utils/departments';
 
 const PostJob = () => {
   const [formData, setFormData] = useState({
@@ -8,7 +10,7 @@ const PostJob = () => {
     jobTitle: '',
     jobType: 'tam-zamanli',
     location: '',
-    department: 'all',
+    departments: [],
     description: '',
     questions: []
   });
@@ -23,6 +25,11 @@ const PostJob = () => {
 
   const handlePostJob = async (e) => {
     e.preventDefault();
+    if (!formData.departments || formData.departments.length === 0) {
+      setError("Lütfen en az bir hedef bölüm seçin.");
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
@@ -34,6 +41,8 @@ const PostJob = () => {
       return;
     }
 
+    const deptString = formData.departments.map(d => d.label).join(', ');
+
     try {
       const { data, error } = await supabase
         .from('jobs')
@@ -43,7 +52,7 @@ const PostJob = () => {
             company: formData.companyName,
             type: formData.jobType,
             location: formData.location,
-            department: formData.department,
+            department: deptString,
             description: formData.description,
             user_id: session.user.id,
             questions: formData.questions
@@ -98,14 +107,20 @@ const PostJob = () => {
         </div>
 
         <div className="form-group" style={{ marginBottom: '15px' }}>
-          <label htmlFor="department" style={{ display: 'block', marginBottom: '5px' }}>Hedef Bölüm</label>
-          <select id="department" value={formData.department} onChange={handleInputChange} required style={{ width: '100%', padding: '10px', borderRadius: '5px' }}>
-              <option value="all">Tüm Bölümler</option>
-              <option value="bilgisayar-muhendisligi">Bilgisayar Mühendisliği</option>
-              <option value="elektrik-elektronik-muhendisligi">Elektrik Elektronik Mühendisliği</option>
-              <option value="makine">Makine</option>
-              <option value="diger">Diğer</option>
-          </select>
+          <label htmlFor="department" style={{ display: 'block', marginBottom: '5px' }}>Hedef Bölümler</label>
+          <Select
+            isMulti
+            name="departments"
+            options={departments}
+            styles={customSelectStyles}
+            className="basic-multi-select"
+            classNamePrefix="select"
+            placeholder="Arama yapın veya seçin..."
+            noOptionsMessage={() => "Sonuç bulunamadı"}
+            value={formData.departments}
+            onChange={(selectedOptions) => setFormData({ ...formData, departments: selectedOptions || [] })}
+            required={!formData.departments || formData.departments.length === 0}
+          />
         </div>
 
         <div className="form-group" style={{ marginBottom: '20px' }}>

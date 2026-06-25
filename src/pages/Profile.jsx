@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
+import Select from 'react-select';
+import { departments, customSelectStyles } from '../utils/departments';
 
 const Profile = () => {
   const [profile, setProfile] = useState({
@@ -8,7 +10,8 @@ const Profile = () => {
     skills: '',
     github_url: '',
     linkedin_url: '',
-    user_type: ''
+    user_type: '',
+    department: null
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -30,13 +33,18 @@ const Profile = () => {
         .single();
         
       if (data) {
+        let deptObj = null;
+        if (data.department) {
+          deptObj = departments.find(d => d.label === data.department) || { label: data.department, value: data.department };
+        }
         setProfile({
           full_name: data.full_name || '',
           bio: data.bio || '',
           skills: data.skills || '',
           github_url: data.github_url || '',
           linkedin_url: data.linkedin_url || '',
-          user_type: data.user_type || ''
+          user_type: data.user_type || '',
+          department: deptObj
         });
       }
     }
@@ -60,7 +68,8 @@ const Profile = () => {
           bio: profile.bio,
           skills: profile.skills,
           github_url: profile.github_url,
-          linkedin_url: profile.linkedin_url
+          linkedin_url: profile.linkedin_url,
+          department: profile.department ? profile.department.label : null
         })
         .eq('id', user.id);
 
@@ -98,6 +107,22 @@ const Profile = () => {
 
         {profile.user_type !== 'firma' && (
           <>
+            <div className="form-group" style={{ marginBottom: '15px' }}>
+              <label htmlFor="department" style={{ display: 'block', marginBottom: '5px' }}>Bölümünüz</label>
+              <Select
+                name="department"
+                options={departments}
+                styles={customSelectStyles}
+                className="basic-single"
+                classNamePrefix="select"
+                placeholder="Arama yapın veya seçin..."
+                noOptionsMessage={() => "Sonuç bulunamadı"}
+                value={profile.department}
+                onChange={(selectedOption) => setProfile({ ...profile, department: selectedOption })}
+                isClearable
+              />
+            </div>
+
             <div className="form-group" style={{ marginBottom: '15px' }}>
               <label htmlFor="bio" style={{ display: 'block', marginBottom: '5px' }}>Hakkımda (Ön Yazı)</label>
               <textarea id="bio" value={profile.bio} onChange={handleInputChange} rows="4" placeholder="Kendinizden kısaca bahsedin..." style={{ width: '100%', padding: '10px', borderRadius: '5px' }}></textarea>
