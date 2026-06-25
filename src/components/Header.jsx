@@ -50,6 +50,12 @@ const Header = ({ toggleTheme, theme }) => {
             <li><Link to="/" className={path === '/' ? 'active' : ''}>Ana Sayfa</Link></li>
             <li><Link to="/jobs" className={path === '/jobs' ? 'active' : ''}>İş ve Proje İlanları</Link></li>
             <li><Link to="/companies" className={path === '/companies' ? 'active' : ''}>Firmalar</Link></li>
+            {session && (
+              <>
+                <li><Link to="/profile" className={path === '/profile' ? 'active' : ''}>Profilim</Link></li>
+                <li><Link to="/dashboard" className={path === '/dashboard' ? 'active' : ''}>Panel</Link></li>
+              </>
+            )}
           </ul>
         </nav>
         <div className="auth-buttons" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
@@ -60,12 +66,10 @@ const Header = ({ toggleTheme, theme }) => {
             </>
           ) : (
             <>
-              <Link to="/profile" className="btn-login">Profilim</Link>
-              <Link to="/dashboard" className="btn-login">Panel</Link>
               {profile?.user_type === 'firma' && (
-                <Link to="/post-job" className="btn-register">İlan Ver</Link>
+                <Link to="/post-job" className="btn-register" style={{ padding: '8px 16px', fontSize: '0.9rem' }}>İlan Ver</Link>
               )}
-              <button onClick={handleLogout} className="btn-login" style={{ background: 'transparent', border: 'none', color: '#E53935', cursor: 'pointer', fontSize: '16px' }}>Çıkış Yap</button>
+              <button onClick={handleLogout} style={{ background: 'transparent', border: 'none', color: 'var(--primary-red)', cursor: 'pointer', fontSize: '15px', fontWeight: 'bold', padding: '0' }}>Çıkış Yap</button>
             </>
           )}
           <button id="themeToggle" className="theme-toggle" onClick={toggleTheme}>
