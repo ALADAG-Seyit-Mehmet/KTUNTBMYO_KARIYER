@@ -39,7 +39,7 @@ const Dashboard = () => {
           .select(`
             *,
             job:job_id(title),
-            student:student_id(full_name, skills, bio, linkedin_url, github_url)
+            student:student_id(full_name, skills, bio, linkedin_url, github_url, cv_url)
           `)
           .in('job_id', jobIds)
           .order('created_at', { ascending: false });
@@ -118,6 +118,15 @@ const Dashboard = () => {
                   {profile?.user_type === 'firma' && (
                     <td style={{ padding: '10px', fontSize: '0.9em' }}>
                       <div style={{ marginBottom: '5px' }}><strong>Yetenekler:</strong> {app.student?.skills || 'Belirtilmemiş'}</div>
+                      
+                      {app.student?.cv_url && (
+                        <div style={{ marginBottom: '5px' }}>
+                          <a href={app.student.cv_url} target="_blank" rel="noopener noreferrer" style={{ color: '#E53935', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                            <i className="fa-solid fa-file-pdf"></i> Özgeçmişi (CV) Görüntüle
+                          </a>
+                        </div>
+                      )}
+
                       {Object.keys(app.answers || {}).length > 0 && (
                         <details>
                           <summary style={{ cursor: 'pointer', color: '#E53935' }}>Sorulara Verilen Cevaplar</summary>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import Select from 'react-select';
 import { departments, customSelectStyles } from '../utils/departments';
+import toast from 'react-hot-toast';
 
 const Profile = () => {
   const [profile, setProfile] = useState({
@@ -11,12 +12,14 @@ const Profile = () => {
     github_url: '',
     linkedin_url: '',
     user_type: '',
-    department: null
+    department: null,
+    cv_url: ''
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
   const [user, setUser] = useState(null);
+  const [uploadingCV, setUploadingCV] = useState(false);
 
   useEffect(() => {
     fetchProfile();
@@ -44,7 +47,8 @@ const Profile = () => {
           github_url: data.github_url || '',
           linkedin_url: data.linkedin_url || '',
           user_type: data.user_type || '',
-          department: deptObj
+          department: deptObj,
+          cv_url: data.cv_url || ''
         });
       }
     }
@@ -53,6 +57,37 @@ const Profile = () => {
 
   const handleInputChange = (e) => {
     setProfile({ ...profile, [e.target.id]: e.target.value });
+  };
+
+  const handleCVUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (file.type !== 'application/pdf') {
+      toast.error('Sadece PDF dosyaları yüklenebilir.');
+      return;
+    }
+
+    setUploadingCV(true);
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${user.id}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+    const filePath = `${fileName}`;
+
+    try {
+      const { error: uploadError } = await supabase.storage
+        .from('cvs')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data } = supabase.storage.from('cvs').getPublicUrl(filePath);
+      
+      setProfile({ ...profile, cv_url: data.publicUrl });
+      toast.success('CV yüklendi. Değişiklikleri kaydet butonuna basmayı unutmayın!');
+    } catch (error) {
+      toast.error('CV yüklenirken hata oluştu. Supabase panosundan CV bucket\'ını oluşturduğunuzdan emin olun.');
+    } finally {
+      setUploadingCV(false);
+    }
   };
 
   const handleSave = async (e) => {
@@ -69,7 +104,8 @@ const Profile = () => {
           skills: profile.skills,
           github_url: profile.github_url,
           linkedin_url: profile.linkedin_url,
-          department: profile.department ? profile.department.label : null
+          department: profile.department ? profile.department.label : null,
+          cv_url: profile.cv_url
         })
         .eq('id', user.id);
 
@@ -143,10 +179,30 @@ const Profile = () => {
                 <input type="url" id="linkedin_url" value={profile.linkedin_url} onChange={handleInputChange} placeholder="https://linkedin.com/in/..." style={{ width: '100%', padding: '10px', borderRadius: '5px' }} />
               </div>
             </div>
+
+            <div className="form-group" style={{ marginBottom: '25px' }}>
+              <label htmlFor="cv_upload" style={{ display: 'block', marginBottom: '5px' }}>Özgeçmiş (CV) - Sadece PDF</label>
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
+                <input 
+                  type="file" 
+                  id="cv_upload" 
+                  accept=".pdf"
+                  onChange={handleCVUpload} 
+                  disabled={uploadingCV}
+                  style={{ flex: 1, padding: '10px', borderRadius: '5px', background: 'rgba(255,255,255,0.05)', color: '#fff', border: '1px solid rgba(255,255,255,0.1)' }} 
+                />
+                {uploadingCV && <span style={{ fontSize: '0.9em', color: '#ccc' }}>Yükleniyor...</span>}
+                {profile.cv_url && !uploadingCV && (
+                  <a href={profile.cv_url} target="_blank" rel="noopener noreferrer" style={{ color: '#4CAF50', textDecoration: 'none', fontSize: '0.9em', display: 'flex', alignItems: 'center', gap: '5px', padding: '10px', background: 'rgba(76,175,80,0.1)', borderRadius: '5px' }}>
+                    <i className="fa-solid fa-file-pdf"></i> Mevcut CV
+                  </a>
+                )}
+              </div>
+            </div>
           </>
         )}
 
-        <button type="submit" className="btn-submit" disabled={saving} style={{ width: '100%', padding: '12px', background: '#E53935', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', fontSize: '1.1em', marginTop: '10px' }}>
+        <button type="submit" className="btn-submit" disabled={saving || uploadingCV} style={{ width: '100%', padding: '12px', background: '#E53935', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', fontSize: '1.1em', marginTop: '10px' }}>
           {saving ? 'Kaydediliyor...' : 'Değişiklikleri Kaydet'}
         </button>
       </form>
