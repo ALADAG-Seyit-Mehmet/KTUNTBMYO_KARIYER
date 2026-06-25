@@ -38,7 +38,7 @@ const Header = ({ toggleTheme, theme }) => {
 
   return (
     <header>
-      <div className="container navbar">
+      <div className="navbar" style={{ padding: '0 40px', maxWidth: '1600px', margin: '0 auto' }}>
         <div className="logo" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
           <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: 'inherit' }}>
             <img src="/logo.png" alt="KTÜN" style={{ height: '80px', marginRight: '15px' }} />
