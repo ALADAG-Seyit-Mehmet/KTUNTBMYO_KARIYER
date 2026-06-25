@@ -38,7 +38,7 @@ const Dashboard = () => {
           .from('applications')
           .select(`
             *,
-            job:job_id(title)
+            job:job_id(title, questions)
           `)
           .in('job_id', jobIds)
           .order('created_at', { ascending: false });
@@ -149,7 +149,12 @@ const Dashboard = () => {
                           <summary style={{ cursor: 'pointer', color: '#E53935' }}>Sorulara Verilen Cevaplar</summary>
                           <ul style={{ marginTop: '5px', paddingLeft: '15px' }}>
                             {Object.entries(app.answers).map(([qIdx, ans]) => (
-                              <li key={qIdx} style={{ marginBottom: '5px' }}>{ans}</li>
+                              <li key={qIdx} style={{ marginBottom: '10px' }}>
+                                <div style={{ color: '#aaa', fontSize: '0.9em', marginBottom: '2px' }}>
+                                  Soru: {app.job?.questions?.[qIdx] || `${parseInt(qIdx) + 1}. Soru`}
+                                </div>
+                                <div style={{ color: '#fff' }}>Cevap: {ans}</div>
+                              </li>
                             ))}
                           </ul>
                         </details>
