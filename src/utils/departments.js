@@ -19,13 +19,17 @@ export const departments = [
 ];
 
 export const customSelectStyles = {
-  control: (base) => ({
+  control: (base, state) => ({
     ...base,
     padding: '4px',
     borderRadius: '5px',
-    borderColor: 'rgba(255,255,255,0.2)',
+    borderColor: state.isFocused ? 'var(--primary-red)' : 'rgba(255,255,255,0.2)',
+    boxShadow: state.isFocused ? '0 0 0 1px var(--primary-red)' : 'none',
     backgroundColor: 'var(--bg-color)',
     color: 'var(--text-dark)',
+    '&:hover': {
+      borderColor: 'var(--primary-red)'
+    }
   }),
   menu: (base) => ({
     ...base,
@@ -40,6 +44,10 @@ export const customSelectStyles = {
     cursor: 'pointer'
   }),
   singleValue: (base) => ({
+    ...base,
+    color: 'var(--text-dark)'
+  }),
+  input: (base) => ({
     ...base,
     color: 'var(--text-dark)'
   }),
