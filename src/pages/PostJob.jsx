@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import Select from 'react-select';
 import { departments, customSelectStyles } from '../utils/departments';
+import toast from 'react-hot-toast';
 
 const PostJob = () => {
   const [formData, setFormData] = useState({
@@ -61,7 +62,7 @@ const PostJob = () => {
 
       if (error) throw error;
       
-      alert("İlan başarıyla eklendi!");
+      toast.success("İlan başarıyla eklendi!");
       navigate('/jobs');
     } catch (err) {
       console.error(err);

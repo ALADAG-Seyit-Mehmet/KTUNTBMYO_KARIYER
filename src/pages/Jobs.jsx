@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const Jobs = () => {
   const [jobs, setJobs] = useState([]);
@@ -40,7 +41,7 @@ const Jobs = () => {
   const handleApplyClick = async (job) => {
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) {
-      alert("Başvuru yapabilmek için giriş yapmalısınız.");
+      toast.error("Başvuru yapabilmek için giriş yapmalısınız.");
       navigate('/login');
       return;
     }
@@ -54,7 +55,7 @@ const Jobs = () => {
       .single();
       
     if (existingApp) {
-      alert("Bu ilana zaten başvuru yaptınız.");
+      toast.error("Bu ilana zaten başvuru yaptınız.");
       return;
     }
 
@@ -81,7 +82,7 @@ const Jobs = () => {
 
       if (error) throw error;
       
-      alert("Başvurunuz başarıyla alındı!");
+      toast.success("Başvurunuz başarıyla alındı!");
       setSelectedJob(null);
     } catch (err) {
       setAppError(err.message);

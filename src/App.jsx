@@ -13,6 +13,7 @@ import Dashboard from './pages/Dashboard';
 import FAQ from './pages/FAQ';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
@@ -32,6 +33,13 @@ function App() {
 
   return (
     <>
+      <Toaster position="top-right" toastOptions={{
+        style: {
+          background: 'var(--bg-color)',
+          color: 'var(--text-dark)',
+          border: '1px solid rgba(255,255,255,0.1)'
+        }
+      }}/>
       <Header toggleTheme={toggleTheme} theme={theme} />
       <Routes>
         <Route path="/" element={<Home />} />
