@@ -50,12 +50,6 @@ const Header = ({ toggleTheme, theme }) => {
             <li><Link to="/" className={path === '/' ? 'active' : ''}>Ana Sayfa</Link></li>
             <li><Link to="/jobs" className={path === '/jobs' ? 'active' : ''}>İş ve Proje İlanları</Link></li>
             <li><Link to="/companies" className={path === '/companies' ? 'active' : ''}>Firmalar</Link></li>
-            {session && (
-              <>
-                <li><Link to="/profile" className={path === '/profile' ? 'active' : ''}>Profilim</Link></li>
-                <li><Link to="/dashboard" className={path === '/dashboard' ? 'active' : ''}>Panel</Link></li>
-              </>
-            )}
           </ul>
         </nav>
         <div className="auth-buttons" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
@@ -66,6 +60,8 @@ const Header = ({ toggleTheme, theme }) => {
             </>
           ) : (
             <>
+              <Link to="/profile" style={{ textDecoration: 'none', color: 'var(--text-color)', fontWeight: '500' }}>Profilim</Link>
+              <Link to="/dashboard" style={{ textDecoration: 'none', color: 'var(--text-color)', fontWeight: '500' }}>Panel</Link>
               {profile?.user_type === 'firma' && (
                 <Link to="/post-job" className="btn-register" style={{ padding: '8px 16px', fontSize: '0.9rem' }}>İlan Ver</Link>
               )}
