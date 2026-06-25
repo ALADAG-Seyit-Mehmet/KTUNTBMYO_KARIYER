@@ -147,7 +147,7 @@ const Profile = () => {
         </div>
       )}
 
-      <form onSubmit={handleSave} style={{ background: 'rgba(255,255,255,0.05)', padding: '30px', borderRadius: '10px' }}>
+      <form onSubmit={handleSave} className="job-card">
         <div className="form-group" style={{ marginBottom: '15px' }}>
           <label htmlFor="full_name" style={{ display: 'block', marginBottom: '5px' }}>Ad Soyad (Veya Firma Adı)</label>
           <input type="text" id="full_name" value={profile.full_name} onChange={handleInputChange} required style={{ width: '100%', padding: '10px', borderRadius: '5px' }} />
@@ -201,9 +201,9 @@ const Profile = () => {
                   accept=".pdf"
                   onChange={handleCVUpload} 
                   disabled={uploadingCV}
-                  style={{ flex: 1, padding: '10px', borderRadius: '5px', background: 'rgba(255,255,255,0.05)', color: '#fff', border: '1px solid rgba(255,255,255,0.1)' }} 
+                  style={{ flex: 1, padding: '10px', borderRadius: '5px', background: 'var(--bg-color)', border: '1px solid var(--border-color)' }} 
                 />
-                {uploadingCV && <span style={{ fontSize: '0.9em', color: '#ccc' }}>Yükleniyor...</span>}
+                {uploadingCV && <span style={{ fontSize: '0.9em', color: 'var(--text-muted)' }}>Yükleniyor...</span>}
                 {profile.cv_url && !uploadingCV && (
                   <a href={profile.cv_url} target="_blank" rel="noopener noreferrer" style={{ color: '#4CAF50', textDecoration: 'none', fontSize: '0.9em', display: 'flex', alignItems: 'center', gap: '5px', padding: '10px', background: 'rgba(76,175,80,0.1)', borderRadius: '5px' }}>
                     <i className="fa-solid fa-file-pdf"></i> Mevcut CV

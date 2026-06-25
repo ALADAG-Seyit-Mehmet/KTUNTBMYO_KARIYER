@@ -40,11 +40,11 @@ const Companies = () => {
         ) : (
           <div className="job-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' }}>
             {companies.map((company) => (
-              <div key={company.id} className="job-card" style={{ background: 'rgba(255,255,255,0.05)', padding: '25px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'center', display: 'flex', flexDirection: 'column' }}>
-                <i className="fa-solid fa-building" style={{ fontSize: '3rem', color: '#E53935', marginBottom: '15px' }}></i>
-                <h3 style={{ color: '#fff', marginBottom: '20px', fontSize: '1.4em' }}>{company.full_name}</h3>
+              <div key={company.id} className="job-card" style={{ textAlign: 'center', display: 'flex', flexDirection: 'column' }}>
+                <i className="fa-solid fa-building" style={{ fontSize: '3rem', color: 'var(--primary-red)', marginBottom: '15px' }}></i>
+                <h3 style={{ marginBottom: '20px', fontSize: '1.4em' }}>{company.full_name}</h3>
                 
-                <div style={{ textAlign: 'left', marginTop: 'auto', fontSize: '0.95em', color: '#ccc', display: 'flex', flexDirection: 'column', gap: '10px', padding: '15px', background: 'rgba(0,0,0,0.2)', borderRadius: '8px' }}>
+                <div style={{ textAlign: 'left', marginTop: 'auto', fontSize: '0.95em', color: 'var(--text-muted)', display: 'flex', flexDirection: 'column', gap: '10px', padding: '15px', background: 'rgba(150,150,150,0.1)', borderRadius: '8px' }}>
                   {company.company_address && (
                     <div style={{ display: 'flex', alignItems: 'flex-start' }}>
                       <i className="fa-solid fa-location-dot" style={{ color: '#E53935', width: '25px', marginTop: '4px' }}></i> 

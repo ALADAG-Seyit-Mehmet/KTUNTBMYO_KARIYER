@@ -35,9 +35,12 @@ function App() {
     <>
       <Toaster position="top-right" toastOptions={{
         style: {
-          background: 'var(--bg-color)',
-          color: 'var(--text-dark)',
-          border: '1px solid rgba(255,255,255,0.1)'
+          background: 'var(--primary-red)',
+          color: 'var(--white)',
+          padding: '16px',
+          borderRadius: '8px',
+          boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+          border: '1px solid var(--border-color)'
         }
       }}/>
       <Header toggleTheme={toggleTheme} theme={theme} />

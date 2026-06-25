@@ -124,10 +124,10 @@ const Jobs = () => {
         ) : (
           <div className="job-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' }}>
             {jobs.map((job) => (
-              <div key={job.id} className="job-card" style={{ background: 'rgba(255,255,255,0.05)', padding: '20px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.1)' }}>
-                <h3 style={{ color: '#fff' }}>{job.title}</h3>
-                <h4 style={{ color: '#E53935' }}>{job.company}</h4>
-                <div style={{ margin: '15px 0', fontSize: '0.9em', color: '#ccc' }}>
+              <div key={job.id} className="job-card">
+                <h3>{job.title}</h3>
+                <h4 style={{ color: 'var(--primary-red)' }}>{job.company}</h4>
+                <div style={{ margin: '15px 0', fontSize: '0.9em', color: 'var(--text-muted)' }}>
                   <p><i className="fa-solid fa-briefcase"></i> {job.type}</p>
                   <p><i className="fa-solid fa-location-dot"></i> {job.location}</p>
                   {job.department && <p><i className="fa-solid fa-building-columns" style={{marginRight: '5px'}}></i> {job.department}</p>}
@@ -145,9 +145,9 @@ const Jobs = () => {
       {/* Application Modal */}
       {selectedJob && (
         <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.8)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
-          <div style={{ background: '#1e1e1e', padding: '30px', borderRadius: '10px', maxWidth: '500px', width: '90%', maxHeight: '90vh', overflowY: 'auto' }}>
-            <h3 style={{ marginBottom: '10px' }}>{selectedJob.title} - Başvuru</h3>
-            <p style={{ marginBottom: '20px', fontSize: '0.9em', color: '#ccc' }}>Profil bilgileriniz firmanın erişimine açılacaktır.</p>
+          <div style={{ background: 'var(--white)', padding: '30px', borderRadius: '10px', width: '90%', maxWidth: '500px' }}>
+            <h2 style={{ marginBottom: '15px' }}>Başvuru Formu</h2>
+            <p style={{ marginBottom: '20px', fontSize: '0.9em', color: 'var(--text-muted)' }}>Profil bilgileriniz firmanın erişimine açılacaktır.</p>
             
             {appError && <div style={{ color: '#E53935', marginBottom: '15px' }}>{appError}</div>}
             

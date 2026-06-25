@@ -101,13 +101,13 @@ const Dashboard = () => {
         <p>{profile?.user_type === 'firma' ? 'İlanlarınıza gelen başvurular' : 'Yaptığınız iş başvuruları'}</p>
       </div>
 
-      <div style={{ background: 'rgba(255,255,255,0.05)', padding: '20px', borderRadius: '10px' }}>
+      <div className="job-card">
         {applications.length === 0 ? (
           <p style={{ textAlign: 'center' }}>Henüz başvuru bulunmamaktadır.</p>
         ) : (
           <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
             <thead>
-              <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.2)' }}>
+              <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
                 <th style={{ padding: '10px' }}>{profile?.user_type === 'firma' ? 'Aday Adı' : 'Firma - Pozisyon'}</th>
                 {profile?.user_type === 'firma' && <th style={{ padding: '10px' }}>Cevaplar & Yetenekler</th>}
                 <th style={{ padding: '10px' }}>Tarih</th>
@@ -117,7 +117,7 @@ const Dashboard = () => {
             </thead>
             <tbody>
               {applications.map(app => (
-                <tr key={app.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+                <tr key={app.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
                   <td style={{ padding: '10px' }}>
                     {profile?.user_type === 'firma' ? (
                       <>
@@ -153,7 +153,7 @@ const Dashboard = () => {
                                 <div style={{ color: '#aaa', fontSize: '0.9em', marginBottom: '2px' }}>
                                   Soru: {app.job?.questions?.[qIdx] || `${parseInt(qIdx) + 1}. Soru`}
                                 </div>
-                                <div style={{ color: '#fff' }}>Cevap: {ans}</div>
+                                <div>Cevap: {ans}</div>
                               </li>
                             ))}
                           </ul>
@@ -169,7 +169,7 @@ const Dashboard = () => {
                       borderRadius: '5px', 
                       fontSize: '0.9em',
                       background: app.status === 'olumlu' ? 'rgba(76,175,80,0.2)' : app.status === 'olumsuz' ? 'rgba(229,57,53,0.2)' : 'rgba(255,255,255,0.1)',
-                      color: app.status === 'olumlu' ? '#4CAF50' : app.status === 'olumsuz' ? '#E53935' : '#ccc'
+                      color: app.status === 'olumlu' ? '#4CAF50' : app.status === 'olumsuz' ? '#E53935' : 'var(--text-muted)'
                     }}>
                       {app.status.toUpperCase()}
                     </span>

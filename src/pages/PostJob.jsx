@@ -81,7 +81,7 @@ const PostJob = () => {
 
       {error && <div style={{ color: '#E53935', marginBottom: '15px', padding: '10px', background: 'rgba(229,57,53,0.1)', borderRadius: '5px' }}>{error}</div>}
 
-      <form className="post-job-form" onSubmit={handlePostJob} style={{ background: 'rgba(255,255,255,0.05)', padding: '30px', borderRadius: '10px' }}>
+      <form className="job-card post-job-form" onSubmit={handlePostJob}>
         <div className="form-group" style={{ marginBottom: '15px' }}>
           <label htmlFor="companyName" style={{ display: 'block', marginBottom: '5px' }}>Firma Adı</label>
           <input type="text" id="companyName" value={formData.companyName} onChange={handleInputChange} placeholder="Örn: Aselsan Konya" required style={{ width: '100%', padding: '10px', borderRadius: '5px' }} />
@@ -129,7 +129,7 @@ const PostJob = () => {
           <textarea id="description" value={formData.description} onChange={handleInputChange} rows="6" placeholder="Adaylardan beklentileriniz, iş tanımı vb." required style={{ width: '100%', padding: '10px', borderRadius: '5px' }}></textarea>
         </div>
 
-        <div className="form-group" style={{ marginBottom: '20px', padding: '15px', border: '1px dashed rgba(255,255,255,0.2)', borderRadius: '5px' }}>
+        <div className="form-group" style={{ marginBottom: '20px', padding: '15px', border: '1px dashed var(--border-color)', borderRadius: '5px' }}>
           <label style={{ display: 'block', marginBottom: '5px' }}>Adaylara Sorulacak Özel Sorular (Opsiyonel)</label>
           <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
             <input 
@@ -149,7 +149,7 @@ const PostJob = () => {
           {formData.questions.length > 0 && (
             <ul style={{ listStyle: 'none', padding: 0, marginTop: '10px' }}>
               {formData.questions.map((q, idx) => (
-                <li key={idx} style={{ background: 'rgba(255,255,255,0.1)', padding: '8px', marginBottom: '5px', borderRadius: '3px', display: 'flex', justifyContent: 'space-between' }}>
+                <li key={idx} style={{ background: 'var(--bg-color)', border: '1px solid var(--border-color)', padding: '8px', marginBottom: '5px', borderRadius: '3px', display: 'flex', justifyContent: 'space-between' }}>
                   <span>{idx + 1}. {q}</span>
                   <button type="button" onClick={() => {
                     const filtered = formData.questions.filter((_, i) => i !== idx);
