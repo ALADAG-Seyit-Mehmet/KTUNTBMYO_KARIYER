@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 const Jobs = () => {
@@ -8,6 +8,11 @@ const Jobs = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
+  
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const [searchTerm, setSearchTerm] = useState(searchParams.get('q') || '');
+  const [typeFilter, setTypeFilter] = useState(searchParams.get('type') || 'all');
   
   // Application Modal State
   const [selectedJob, setSelectedJob] = useState(null);
@@ -107,6 +112,23 @@ const Jobs = () => {
     }
   };
 
+  const filteredJobs = jobs.filter(job => {
+    const term = searchTerm.toLowerCase();
+    const matchesSearch = 
+      (job.title?.toLowerCase() || '').includes(term) || 
+      (job.company?.toLowerCase() || '').includes(term) ||
+      (job.description?.toLowerCase() || '').includes(term);
+      
+    let typeValue = typeFilter;
+    if (typeFilter === 'tam-zamanli') typeValue = 'Tam Zamanlı';
+    if (typeFilter === 'yari-zamanli') typeValue = 'Yarı Zamanlı';
+    if (typeFilter === 'staj') typeValue = 'Staj';
+
+    const matchesType = typeFilter === 'all' || job.type === typeValue;
+    
+    return matchesSearch && matchesType;
+  });
+
   return (
     <section className="job-listings" style={{ padding: '40px 0', minHeight: '60vh', position: 'relative' }}>
       <div className="container">
@@ -115,15 +137,46 @@ const Jobs = () => {
           <p>Kariyerinize yön verecek fırsatlar</p>
         </div>
 
+        <div className="search-box" style={{ 
+          display: 'flex', 
+          maxWidth: '800px', 
+          margin: '0 auto 40px', 
+          background: 'var(--white)', 
+          padding: '10px', 
+          borderRadius: '50px',
+          boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
+          border: '1px solid var(--border-color)',
+          gap: '10px'
+        }}>
+          <input 
+            type="text" 
+            placeholder="Pozisyon, yetenek veya firma ara..." 
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{ flex: 2, border: 'none', padding: '10px 20px', outline: 'none', background: 'transparent', color: 'var(--text-dark)', fontSize: '1rem' }}
+          />
+          <div style={{ width: '1px', background: 'var(--border-color)', margin: '10px 0' }}></div>
+          <select 
+            value={typeFilter} 
+            onChange={(e) => setTypeFilter(e.target.value)}
+            style={{ flex: 1, border: 'none', padding: '10px', outline: 'none', background: 'transparent', color: 'var(--text-dark)', fontSize: '1rem', cursor: 'pointer' }}
+          >
+            <option value="all">Tüm İlan Türleri</option>
+            <option value="tam-zamanli">Tam Zamanlı</option>
+            <option value="yari-zamanli">Yarı Zamanlı</option>
+            <option value="staj">Staj</option>
+          </select>
+        </div>
+
         {error && <div style={{ color: 'red', textAlign: 'center', marginBottom: '20px' }}>{error}</div>}
         
         {loading ? (
           <p style={{ textAlign: 'center' }}>İlanlar Yükleniyor...</p>
-        ) : jobs.length === 0 ? (
-          <p style={{ textAlign: 'center' }}>Henüz ilan bulunmamaktadır.</p>
+        ) : filteredJobs.length === 0 ? (
+          <p style={{ textAlign: 'center' }}>Aradığınız kriterlere uygun ilan bulunamadı.</p>
         ) : (
           <div className="job-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' }}>
-            {jobs.map((job) => (
+            {filteredJobs.map((job) => (
               <div key={job.id} className="job-card">
                 <h3>{job.title}</h3>
                 <h4 style={{ color: 'var(--primary-red)' }}>{job.company}</h4>
