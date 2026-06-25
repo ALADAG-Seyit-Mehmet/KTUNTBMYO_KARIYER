@@ -7,14 +7,25 @@ const Header = ({ toggleTheme, theme }) => {
   const path = location.pathname;
   const navigate = useNavigate();
   const [session, setSession] = useState(null);
+  const [profile, setProfile] = useState(null);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       setSession(session);
+      if (session) {
+        const { data } = await supabase.from('profiles').select('user_type').eq('id', session.user.id).single();
+        setProfile(data);
+      }
     });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       setSession(session);
+      if (session) {
+        const { data } = await supabase.from('profiles').select('user_type').eq('id', session.user.id).single();
+        setProfile(data);
+      } else {
+        setProfile(null);
+      }
     });
 
     return () => subscription.unsubscribe();
@@ -41,7 +52,7 @@ const Header = ({ toggleTheme, theme }) => {
             <li><Link to="/companies" className={path === '/companies' ? 'active' : ''}>Firmalar</Link></li>
           </ul>
         </nav>
-        <div className="auth-buttons" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div className="auth-buttons" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
           {!session ? (
             <>
               <Link to="/login" className="btn-login">Giriş Yap</Link>
@@ -49,10 +60,12 @@ const Header = ({ toggleTheme, theme }) => {
             </>
           ) : (
             <>
-              <Link to="/profile" className="btn-login" style={{ background: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.2)' }}>Profilim</Link>
-              <Link to="/dashboard" className="btn-login" style={{ background: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.2)' }}>Panel</Link>
-              <Link to="/post-job" className="btn-submit" style={{ padding: '8px 15px' }}>İlan Ver</Link>
-              <button onClick={handleLogout} className="btn-login" style={{ background: 'transparent', color: '#E53935' }}>Çıkış Yap</button>
+              <Link to="/profile" className="btn-login">Profilim</Link>
+              <Link to="/dashboard" className="btn-login">Panel</Link>
+              {profile?.user_type === 'firma' && (
+                <Link to="/post-job" className="btn-register">İlan Ver</Link>
+              )}
+              <button onClick={handleLogout} className="btn-login" style={{ background: 'transparent', border: 'none', color: '#E53935', cursor: 'pointer', fontSize: '16px' }}>Çıkış Yap</button>
             </>
           )}
           <button id="themeToggle" className="theme-toggle" onClick={toggleTheme}>
