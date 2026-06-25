@@ -58,6 +58,9 @@ const Login = () => {
             placeholder="••••••••" 
             required 
           />
+          <div style={{ textAlign: 'right', marginTop: '5px' }}>
+            <Link to="/forgot-password" style={{ fontSize: '14px', color: 'var(--text-muted)' }}>Şifremi Unuttum</Link>
+          </div>
         </div>
 
         <button type="submit" className="btn-submit" disabled={loading}>

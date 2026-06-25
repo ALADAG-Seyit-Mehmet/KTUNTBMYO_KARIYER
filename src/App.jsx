@@ -11,6 +11,8 @@ import PostJob from './pages/PostJob';
 import Profile from './pages/Profile';
 import Dashboard from './pages/Dashboard';
 import FAQ from './pages/FAQ';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 
 function App() {
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
@@ -41,6 +43,8 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/faq" element={<FAQ />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="*" element={<div className="container" style={{padding: '50px 0', textAlign: 'center'}}><h2>Sayfa Yapım Aşamasında</h2><p>React dönüşümü devam ediyor.</p></div>} />
       </Routes>
       <Footer />
