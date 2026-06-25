@@ -34,17 +34,34 @@ const Dashboard = () => {
       
       if (myJobs && myJobs.length > 0) {
         const jobIds = myJobs.map(j => j.id);
-        const { data: apps } = await supabase
+        const { data: apps, error: appsError } = await supabase
           .from('applications')
           .select(`
             *,
-            job:job_id(title),
-            student:student_id(full_name, skills, bio, linkedin_url, github_url, cv_url)
+            job:job_id(title)
           `)
           .in('job_id', jobIds)
           .order('created_at', { ascending: false });
           
-        setApplications(apps || []);
+        if (appsError) console.error("Başvurular çekilirken hata:", appsError.message);
+
+        if (apps && apps.length > 0) {
+          const studentIds = [...new Set(apps.map(a => a.student_id))];
+          const { data: students, error: studentsError } = await supabase
+            .from('profiles')
+            .select('id, full_name, skills, bio, linkedin_url, github_url, cv_url')
+            .in('id', studentIds);
+            
+          if (studentsError) console.error("Öğrenci profilleri çekilirken hata:", studentsError.message);
+
+          const appsWithStudents = apps.map(app => ({
+            ...app,
+            student: students?.find(s => s.id === app.student_id) || {}
+          }));
+          setApplications(appsWithStudents);
+        } else {
+          setApplications([]);
+        }
       }
     } else {
       // Öğrenci/Mezun ise: Kendi başvurularını çek
