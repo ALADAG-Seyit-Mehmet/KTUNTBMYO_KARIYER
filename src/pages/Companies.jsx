@@ -38,11 +38,45 @@ const Companies = () => {
         ) : companies.length === 0 ? (
           <p style={{ textAlign: 'center' }}>Sistemde kayıtlı firma bulunmamaktadır.</p>
         ) : (
-          <div className="job-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
+          <div className="job-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' }}>
             {companies.map((company) => (
-              <div key={company.id} className="job-card" style={{ background: 'rgba(255,255,255,0.05)', padding: '20px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'center' }}>
+              <div key={company.id} className="job-card" style={{ background: 'rgba(255,255,255,0.05)', padding: '25px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'center', display: 'flex', flexDirection: 'column' }}>
                 <i className="fa-solid fa-building" style={{ fontSize: '3rem', color: '#E53935', marginBottom: '15px' }}></i>
-                <h3 style={{ color: '#fff', marginBottom: '10px' }}>{company.full_name}</h3>
+                <h3 style={{ color: '#fff', marginBottom: '20px', fontSize: '1.4em' }}>{company.full_name}</h3>
+                
+                <div style={{ textAlign: 'left', marginTop: 'auto', fontSize: '0.95em', color: '#ccc', display: 'flex', flexDirection: 'column', gap: '10px', padding: '15px', background: 'rgba(0,0,0,0.2)', borderRadius: '8px' }}>
+                  {company.company_address && (
+                    <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                      <i className="fa-solid fa-location-dot" style={{ color: '#E53935', width: '25px', marginTop: '4px' }}></i> 
+                      <span>{company.company_address}</span>
+                    </div>
+                  )}
+                  {company.company_phone && (
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <i className="fa-solid fa-phone" style={{ color: '#E53935', width: '25px' }}></i> 
+                      <span>{company.company_phone}</span>
+                    </div>
+                  )}
+                  {company.company_email && (
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <i className="fa-solid fa-envelope" style={{ color: '#E53935', width: '25px' }}></i> 
+                      <span>{company.company_email}</span>
+                    </div>
+                  )}
+                  {company.company_website && (
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <i className="fa-solid fa-globe" style={{ color: '#E53935', width: '25px' }}></i> 
+                      <a href={company.company_website} target="_blank" rel="noopener noreferrer" style={{ color: '#4CAF50', textDecoration: 'none' }}>
+                        Web Sitesine Git
+                      </a>
+                    </div>
+                  )}
+                  {!company.company_address && !company.company_phone && !company.company_email && !company.company_website && (
+                    <div style={{ textAlign: 'center', color: '#777', fontStyle: 'italic' }}>
+                      İletişim bilgisi eklenmemiş.
+                    </div>
+                  )}
+                </div>
               </div>
             ))}
           </div>

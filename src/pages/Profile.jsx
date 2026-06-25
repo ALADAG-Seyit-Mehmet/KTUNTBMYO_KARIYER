@@ -13,7 +13,11 @@ const Profile = () => {
     linkedin_url: '',
     user_type: '',
     department: null,
-    cv_url: ''
+    cv_url: '',
+    company_address: '',
+    company_phone: '',
+    company_email: '',
+    company_website: ''
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -48,7 +52,11 @@ const Profile = () => {
           linkedin_url: data.linkedin_url || '',
           user_type: data.user_type || '',
           department: deptObj,
-          cv_url: data.cv_url || ''
+          cv_url: data.cv_url || '',
+          company_address: data.company_address || '',
+          company_phone: data.company_phone || '',
+          company_email: data.company_email || '',
+          company_website: data.company_website || ''
         });
       }
     }
@@ -105,7 +113,11 @@ const Profile = () => {
           github_url: profile.github_url,
           linkedin_url: profile.linkedin_url,
           department: profile.department ? profile.department.label : null,
-          cv_url: profile.cv_url
+          cv_url: profile.cv_url,
+          company_address: profile.company_address,
+          company_phone: profile.company_phone,
+          company_email: profile.company_email,
+          company_website: profile.company_website
         })
         .eq('id', user.id);
 
@@ -198,6 +210,31 @@ const Profile = () => {
                   </a>
                 )}
               </div>
+            </div>
+          </>
+        )}
+
+        {profile.user_type === 'firma' && (
+          <>
+            <div className="form-group" style={{ marginBottom: '15px' }}>
+              <label htmlFor="company_address" style={{ display: 'block', marginBottom: '5px' }}>Firma Adresi</label>
+              <textarea id="company_address" value={profile.company_address} onChange={handleInputChange} rows="2" placeholder="Örn: Selçuklu, Konya" style={{ width: '100%', padding: '10px', borderRadius: '5px' }}></textarea>
+            </div>
+            
+            <div className="form-row" style={{ display: 'flex', gap: '15px', marginBottom: '15px', flexWrap: 'wrap' }}>
+              <div className="form-group" style={{ flex: 1, minWidth: '200px' }}>
+                <label htmlFor="company_phone" style={{ display: 'block', marginBottom: '5px' }}>İletişim Numarası</label>
+                <input type="tel" id="company_phone" value={profile.company_phone} onChange={handleInputChange} placeholder="0555 555 55 55" style={{ width: '100%', padding: '10px', borderRadius: '5px' }} />
+              </div>
+              <div className="form-group" style={{ flex: 1, minWidth: '200px' }}>
+                <label htmlFor="company_email" style={{ display: 'block', marginBottom: '5px' }}>İletişim E-posta</label>
+                <input type="email" id="company_email" value={profile.company_email} onChange={handleInputChange} placeholder="iletisim@firma.com" style={{ width: '100%', padding: '10px', borderRadius: '5px' }} />
+              </div>
+            </div>
+
+            <div className="form-group" style={{ marginBottom: '25px' }}>
+              <label htmlFor="company_website" style={{ display: 'block', marginBottom: '5px' }}>Web Sitesi</label>
+              <input type="url" id="company_website" value={profile.company_website} onChange={handleInputChange} placeholder="https://www.firma.com" style={{ width: '100%', padding: '10px', borderRadius: '5px' }} />
             </div>
           </>
         )}
