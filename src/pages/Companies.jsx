@@ -17,7 +17,24 @@ const Companies = () => {
         .eq('user_type', 'firma');
 
       if (error) throw error;
-      setCompanies(data || []);
+      
+      const dummyCompanies = [
+        { id: 'dummy-1', full_name: 'Tech Innovators A.Ş.', company_address: 'Selçuklu, Konya', user_type: 'firma' },
+        { id: 'dummy-2', full_name: 'Gelişim Otomasyon', company_address: 'Karatay, Konya', user_type: 'firma' },
+        { id: 'dummy-3', full_name: 'Konya Makine Sanayi', company_address: 'Konya OSB', user_type: 'firma' },
+        { id: 'dummy-4', full_name: 'Yapıtaşı Mimarlık', company_address: 'Meram, Konya', user_type: 'firma' },
+        { id: 'dummy-5', full_name: 'Metal İş Kesim', company_address: 'Karatay, Konya', user_type: 'firma' },
+        { id: 'dummy-6', full_name: 'GONICEON Studio', company_address: 'Konya', user_type: 'firma' },
+      ];
+
+      const allCompanies = [...(data || []), ...dummyCompanies];
+      
+      // Aynı isimdeki firmaların tekrarlanmasını önle (eğer veritabanına sonradan eklenirse)
+      const uniqueCompanies = allCompanies.filter((comp, index, self) =>
+        index === self.findIndex((t) => t.full_name === comp.full_name)
+      );
+
+      setCompanies(uniqueCompanies);
     } catch (err) {
       console.error("Firmalar yüklenirken hata:", err.message);
     } finally {

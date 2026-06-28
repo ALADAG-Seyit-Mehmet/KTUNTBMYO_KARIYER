@@ -14,37 +14,7 @@
     --transition: all 0.3s ease;
 }
 
-/* Dark Mode Variables */
-body.dark-mode {
-    --primary-red: #E53935;
-    --dark-red: #D32F2F;
-    --light-red: #4A1A1A;
-    --white: #1E1E1E;
-    --bg-color: #121212;
-    --text-dark: #F5F5F5;
-    --text-muted: #B0B0B0;
-    --border-color: #333333;
-    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
-    --hover-shadow: 0 10px 20px rgba(211, 47, 47, 0.3);
-}
 
-body.dark-mode .nav-logo-img {
-    filter: brightness(0.9);
-}
-
-.theme-toggle {
-    background: transparent;
-    border: none;
-    color: var(--text-dark);
-    font-size: 20px;
-    cursor: pointer;
-    margin-left: 15px;
-    transition: var(--transition);
-}
-
-.theme-toggle:hover {
-    color: var(--primary-red);
-}
 
 * {
     margin: 0;
@@ -140,7 +110,8 @@ a {
 /* Header */
 header {
     background-color: var(--white);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid var(--border-color);
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -150,7 +121,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 80px;
+    height: 120px;
 }
 
 .logo {
@@ -165,7 +136,7 @@ header {
 }
 
 .logo h1 {
-    font-size: 24px;
+    font-size: 32px;
     font-weight: 700;
     color: var(--text-dark);
 }
@@ -177,10 +148,11 @@ header {
 nav ul {
     display: flex;
     list-style: none;
-    gap: 30px;
+    gap: 40px;
 }
 
 nav a {
+    font-size: 18px;
     font-weight: 600;
     color: var(--text-muted);
     transition: var(--transition);

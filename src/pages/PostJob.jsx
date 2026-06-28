@@ -13,6 +13,7 @@ const PostJob = () => {
     location: '',
     departments: [],
     description: '',
+    keywords: '',
     questions: []
   });
   const [newQuestion, setNewQuestion] = useState('');
@@ -55,6 +56,7 @@ const PostJob = () => {
             location: formData.location,
             department: deptString,
             description: formData.description,
+            keywords: formData.keywords,
             user_id: session.user.id,
             questions: formData.questions
           }
@@ -127,6 +129,11 @@ const PostJob = () => {
         <div className="form-group" style={{ marginBottom: '20px' }}>
           <label htmlFor="description" style={{ display: 'block', marginBottom: '5px' }}>İlan Detayları</label>
           <textarea id="description" value={formData.description} onChange={handleInputChange} rows="6" placeholder="Adaylardan beklentileriniz, iş tanımı vb." required style={{ width: '100%', padding: '10px', borderRadius: '5px' }}></textarea>
+        </div>
+
+        <div className="form-group" style={{ marginBottom: '15px' }}>
+          <label htmlFor="keywords" style={{ display: 'block', marginBottom: '5px' }}>Aranan Yetenekler / Anahtar Kelimeler</label>
+          <input type="text" id="keywords" value={formData.keywords} onChange={handleInputChange} placeholder="Örn: React, Node.js, AutoCAD (Aralarına virgül koyun)" style={{ width: '100%', padding: '10px', borderRadius: '5px' }} />
         </div>
 
         <div className="form-group" style={{ marginBottom: '20px', padding: '15px', border: '1px dashed var(--border-color)', borderRadius: '5px' }}>

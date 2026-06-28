@@ -6,7 +6,7 @@ const Footer = () => {
       <div className="container footer-content">
         <div className="footer-col">
           <h3>KTÜNTBMYO Kariyer</h3>
-          <p>Öğrencilerimiz ve mezunlarımız için özel tasarlanmış modern kariyer ve iş ilanları platformu. Geleceğin mühendisleri, mimarları ve teknikerleri burada buluşuyor.</p>
+          <p>Öğrencilerimiz ve mezunlarımız için özel tasarlanmış modern kariyer ve iş ilanları platformu. Geleceğin teknikerleri ve uzmanları burada buluşuyor.</p>
         </div>
         <div className="footer-col">
           <h3>Hızlı Bağlantılar</h3>

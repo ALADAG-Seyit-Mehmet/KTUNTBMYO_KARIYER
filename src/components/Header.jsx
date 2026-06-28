@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 
-const Header = ({ toggleTheme, theme }) => {
+const Header = () => {
   const location = useLocation();
   const path = location.pathname;
   const navigate = useNavigate();
@@ -41,7 +41,7 @@ const Header = ({ toggleTheme, theme }) => {
       <div className="navbar" style={{ padding: '0 40px', maxWidth: '1600px', margin: '0 auto' }}>
         <div className="logo" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
           <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: 'inherit' }}>
-            <img src="/logo.png" alt="KTÜN" style={{ height: '80px', marginRight: '15px' }} />
+            <img src="/logo.png" alt="KTÜN" style={{ height: '100px', width: 'auto', objectFit: 'contain', marginRight: '20px' }} />
             <h1>KTÜNTBMYO<span>Kariyer</span></h1>
           </Link>
         </div>
@@ -68,9 +68,6 @@ const Header = ({ toggleTheme, theme }) => {
               <button onClick={handleLogout} style={{ background: 'transparent', border: 'none', color: 'var(--primary-red)', cursor: 'pointer', fontSize: '15px', fontWeight: 'bold', padding: '0' }}>Çıkış Yap</button>
             </>
           )}
-          <button id="themeToggle" className="theme-toggle" onClick={toggleTheme}>
-            <i className={`fa-solid ${theme === 'dark' ? 'fa-sun' : 'fa-moon'}`}></i>
-          </button>
         </div>
       </div>
     </header>

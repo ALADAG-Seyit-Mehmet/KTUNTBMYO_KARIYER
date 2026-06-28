@@ -3,7 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 
 const Register = () => {
-  const [userType, setUserType] = useState('ogrenci'); // ogrenci, mezun, firma
+  const [userType, setUserType] = useState('ogrenci_mezun'); // ogrenci_mezun, akademisyen, firma
+  const [isGraduate, setIsGraduate] = useState(false);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -27,10 +28,15 @@ const Register = () => {
 
     const fullName = `${formData.firstName} ${formData.lastName}`;
     
+    let finalUserType = userType;
+    if (userType === 'ogrenci_mezun') {
+      finalUserType = isGraduate ? 'mezun' : 'ogrenci';
+    }
+    
     // Firma ise firma adını tam ad olarak kaydet veya meta dataya ekle
     const metaData = {
       full_name: userType === 'firma' ? formData.companyName : fullName,
-      user_type: userType
+      user_type: finalUserType
     };
 
     const { data, error } = await supabase.auth.signUp({
@@ -58,8 +64,8 @@ const Register = () => {
       <p>Aramıza katılarak kariyerinize yön verin.</p>
 
       <div className="auth-tabs" style={{ display: 'flex', flexWrap: 'wrap', gap: '5px', justifyContent: 'center', marginBottom: '20px' }}>
-        <button type="button" className={`auth-tab ${userType === 'ogrenci' ? 'active' : ''}`} onClick={() => setUserType('ogrenci')}>Öğrenci</button>
-        <button type="button" className={`auth-tab ${userType === 'mezun' ? 'active' : ''}`} onClick={() => setUserType('mezun')}>Mezun</button>
+        <button type="button" className={`auth-tab ${userType === 'ogrenci_mezun' ? 'active' : ''}`} onClick={() => setUserType('ogrenci_mezun')}>Öğrenci / Mezun</button>
+        <button type="button" className={`auth-tab ${userType === 'akademisyen' ? 'active' : ''}`} onClick={() => setUserType('akademisyen')}>Akademisyen</button>
         <button type="button" className={`auth-tab ${userType === 'firma' ? 'active' : ''}`} onClick={() => setUserType('firma')}>Firma</button>
       </div>
 
@@ -94,6 +100,30 @@ const Register = () => {
           <label htmlFor="password">Şifreniz</label>
           <input type="password" id="password" value={formData.password} onChange={handleInputChange} required minLength="6" />
         </div>
+
+        {userType === 'ogrenci_mezun' && (
+          <div className="form-group" style={{ marginBottom: '20px' }}>
+            <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>Mezuniyet Durumunuz</label>
+            <div style={{ display: 'flex', gap: '20px' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer' }}>
+                <input 
+                  type="radio" 
+                  name="graduateStatus" 
+                  checked={isGraduate === false} 
+                  onChange={() => setIsGraduate(false)} 
+                /> Öğrenciyim
+              </label>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer' }}>
+                <input 
+                  type="radio" 
+                  name="graduateStatus" 
+                  checked={isGraduate === true} 
+                  onChange={() => setIsGraduate(true)} 
+                /> Mezunum
+              </label>
+            </div>
+          </div>
+        )}
 
         <button type="submit" className="btn-submit" disabled={loading}>
           {loading ? 'Kayıt Yapılıyor...' : 'Kayıt Ol'}

@@ -7,11 +7,52 @@ const Home = () => {
   const [typeFilter, setTypeFilter] = useState('all');
   const [recentJobs, setRecentJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [recommendedJobs, setRecommendedJobs] = useState([]);
+  const [userProfile, setUserProfile] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchRecentJobs();
+    fetchUserProfile();
   }, []);
+
+  const fetchUserProfile = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) {
+      const { data } = await supabase
+        .from('profiles')
+        .select('user_type, skills')
+        .eq('id', session.user.id)
+        .single();
+      if (data) {
+        setUserProfile(data);
+        if ((data.user_type === 'ogrenci' || data.user_type === 'mezun') && data.skills) {
+          fetchRecommendedJobs(data.skills);
+        }
+      }
+    }
+  };
+
+  const fetchRecommendedJobs = async (skills) => {
+    try {
+      const { data, error } = await supabase.from('jobs').select('*');
+      if (!error && data) {
+        const userSkills = skills.split(',').map(s => s.trim().toLowerCase()).filter(s => s);
+        if (userSkills.length > 0) {
+           const recommended = data.filter(job => {
+             const jobText = `${job.keywords || ''} ${job.description || ''}`.toLowerCase();
+             return userSkills.some(skill => jobText.includes(skill));
+           });
+           
+           // Sort by creation date
+           recommended.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+           setRecommendedJobs(recommended.slice(0, 3));
+        }
+      }
+    } catch (err) {
+      console.error('Önerilen ilanlar çekilirken hata:', err.message);
+    }
+  };
 
   const fetchRecentJobs = async () => {
     try {
@@ -46,8 +87,8 @@ const Home = () => {
         boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
       }}>
         <div className="container hero-content">
-          <h1 style={{ fontSize: '2.5rem', marginBottom: '20px', fontWeight: '800' }}>Geleceğin Mühendisleri ve Mimarları İçin Kariyer Fırsatları</h1>
-          <p style={{ fontSize: '1.2rem', marginBottom: '40px', opacity: '0.9' }}>Konya Teknik Üniversitesi öğrencilerine ve mezunlarına özel en güncel iş ve staj ilanlarını keşfedin.</p>
+          <h1 style={{ fontSize: '2.5rem', marginBottom: '20px', fontWeight: '800' }}>Geleceğin Teknikerleri İçin Kariyer Fırsatları</h1>
+          <p style={{ fontSize: '1.2rem', marginBottom: '40px', opacity: '0.9' }}>Konya Teknik Üniversitesi Teknik Bilimler Meslek Yüksekokulu öğrencilerine ve mezunlarına özel en güncel iş ve staj ilanlarını keşfedin.</p>
 
           <div className="search-box" style={{ 
             display: 'flex', 
@@ -86,7 +127,39 @@ const Home = () => {
         </div>
       </section>
 
-
+      {/* Recommended Jobs Section */}
+      {userProfile && (userProfile.user_type === 'ogrenci' || userProfile.user_type === 'mezun') && userProfile.skills && (
+        <section style={{ padding: '60px 0', background: '#f9f9f9' }}>
+          <div className="container">
+            <div className="section-title" style={{ textAlign: 'center', marginBottom: '40px' }}>
+              <h2 style={{ fontSize: '2rem', marginBottom: '10px' }}>Size Özel Önerilen İlanlar</h2>
+              <p style={{ color: 'var(--text-muted)' }}>Profilinizdeki yeteneklerinize uygun olarak seçilmiştir.</p>
+            </div>
+            
+            {recommendedJobs.length === 0 ? (
+              <p style={{ textAlign: 'center', color: 'var(--text-muted)' }}>Profilinizdeki yeteneklere tam uygun ilan şu an bulunmuyor.</p>
+            ) : (
+              <div className="job-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' }}>
+                {recommendedJobs.map((job) => (
+                  <div key={job.id} className="job-card" style={{ border: '1px solid var(--primary-red)' }}>
+                    <h3>{job.title}</h3>
+                    <h4 style={{ color: 'var(--primary-red)' }}>{job.company}</h4>
+                    <div style={{ margin: '15px 0', fontSize: '0.9em', color: 'var(--text-muted)' }}>
+                      <p><i className="fa-solid fa-briefcase"></i> {job.type}</p>
+                      <p><i className="fa-solid fa-location-dot"></i> {job.location}</p>
+                      {job.department && <p><i className="fa-solid fa-building-columns" style={{marginRight: '5px'}}></i> {job.department}</p>}
+                    </div>
+                    <p style={{ fontSize: '0.9em', marginBottom: '20px', flexGrow: 1 }}>{job.description && job.description.length > 100 ? job.description.substring(0, 100) + '...' : job.description}</p>
+                    <Link to="/jobs" className="btn-submit" style={{ display: 'inline-block', textAlign: 'center', background: 'var(--primary-red)', color: 'white', marginTop: 'auto' }}>
+                      İlana Git
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+      )}
 
       {/* Recent Jobs Section */}
       <section style={{ padding: '60px 0' }}>
@@ -111,8 +184,8 @@ const Home = () => {
                     <p><i className="fa-solid fa-location-dot"></i> {job.location}</p>
                     {job.department && <p><i className="fa-solid fa-building-columns" style={{marginRight: '5px'}}></i> {job.department}</p>}
                   </div>
-                  <p style={{ fontSize: '0.9em', marginBottom: '20px' }}>{job.description && job.description.length > 100 ? job.description.substring(0, 100) + '...' : job.description}</p>
-                  <Link to="/jobs" className="btn-submit" style={{ display: 'inline-block', textAlign: 'center', background: 'transparent', color: 'var(--primary-red)', border: '1px solid var(--primary-red)' }}>
+                  <p style={{ fontSize: '0.9em', marginBottom: '20px', flexGrow: 1 }}>{job.description && job.description.length > 100 ? job.description.substring(0, 100) + '...' : job.description}</p>
+                  <Link to="/jobs" className="btn-submit" style={{ display: 'inline-block', textAlign: 'center', background: 'transparent', color: 'var(--primary-red)', border: '1px solid var(--primary-red)', marginTop: 'auto' }}>
                     İlana Git
                   </Link>
                 </div>

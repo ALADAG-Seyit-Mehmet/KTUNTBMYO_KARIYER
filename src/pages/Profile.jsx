@@ -172,13 +172,19 @@ const Profile = () => {
             </div>
 
             <div className="form-group" style={{ marginBottom: '15px' }}>
-              <label htmlFor="bio" style={{ display: 'block', marginBottom: '5px' }}>Hakkımda (Ön Yazı)</label>
-              <textarea id="bio" value={profile.bio} onChange={handleInputChange} rows="4" placeholder="Kendinizden kısaca bahsedin..." style={{ width: '100%', padding: '10px', borderRadius: '5px' }}></textarea>
+              <label htmlFor="bio" style={{ display: 'block', marginBottom: '5px' }}>
+                Hakkımda (Ön Yazı)
+                <span style={{ fontSize: '0.85em', color: '#E53935', marginLeft: '5px', fontWeight: 'normal' }}>* Zorunlu</span>
+              </label>
+              <textarea id="bio" value={profile.bio} onChange={handleInputChange} rows="4" required placeholder="Kendinizden kısaca bahsedin..." style={{ width: '100%', padding: '10px', borderRadius: '5px' }}></textarea>
             </div>
 
             <div className="form-group" style={{ marginBottom: '15px' }}>
-              <label htmlFor="skills" style={{ display: 'block', marginBottom: '5px' }}>Yetenekler</label>
-              <input type="text" id="skills" value={profile.skills} onChange={handleInputChange} placeholder="Örn: React, Node.js, AutoCAD, İngilizce (Aralarına virgül koyun)" style={{ width: '100%', padding: '10px', borderRadius: '5px' }} />
+              <label htmlFor="skills" style={{ display: 'block', marginBottom: '5px' }}>
+                Yetenekler
+                <span style={{ fontSize: '0.85em', color: '#E53935', marginLeft: '5px', fontWeight: 'normal' }}>* Zorunlu (Sistem buraya girdiğiniz yeteneklere göre size özel iş ilanları önerecektir)</span>
+              </label>
+              <input type="text" id="skills" value={profile.skills} onChange={handleInputChange} required placeholder="Örn: React, Node.js, AutoCAD, İngilizce (Aralarına virgül koyun)" style={{ width: '100%', padding: '10px', borderRadius: '5px' }} />
             </div>
 
             <div className="form-row" style={{ display: 'flex', gap: '15px', marginBottom: '15px' }}>

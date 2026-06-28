@@ -16,20 +16,7 @@ import ResetPassword from './pages/ResetPassword';
 import { Toaster } from 'react-hot-toast';
 
 function App() {
-  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
-
-  useEffect(() => {
-    if (theme === 'dark') {
-      document.body.classList.add('dark-mode');
-    } else {
-      document.body.classList.remove('dark-mode');
-    }
-    localStorage.setItem('theme', theme);
-  }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme(theme === 'light' ? 'dark' : 'light');
-  };
+  // Karanlık tema tamamen kaldırıldı
 
   return (
     <>
@@ -43,7 +30,7 @@ function App() {
           border: '1px solid var(--border-color)'
         }
       }}/>
-      <Header toggleTheme={toggleTheme} theme={theme} />
+      <Header />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/jobs" element={<Jobs />} />
