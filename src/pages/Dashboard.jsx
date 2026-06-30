@@ -45,12 +45,12 @@ const Dashboard = () => {
           
         if (appsError) console.error("Başvurular çekilirken hata:", appsError.message);
 
-        if (apps && apps.length > 0) {
-          const studentIds = [...new Set(apps.map(a => a.student_id))];
-          const { data: students, error: studentsError } = await supabase
-            .from('profiles')
-            .select('id, full_name, skills, bio, linkedin_url, github_url, cv_url')
-            .in('id', studentIds);
+          if (apps && apps.length > 0) {
+            const studentIds = [...new Set(apps.map(a => a.student_id))];
+            const { data: students, error: studentsError } = await supabase
+              .from('profiles')
+              .select('*')
+              .in('id', studentIds);
             
           if (studentsError) console.error("Öğrenci profilleri çekilirken hata:", studentsError.message);
 
@@ -143,6 +143,20 @@ const Dashboard = () => {
                           </a>
                         </div>
                       )}
+
+                      <details style={{ marginBottom: '10px' }}>
+                        <summary style={{ cursor: 'pointer', color: '#E53935', fontWeight: 'bold' }}>Tüm Profil Bilgilerini Göster</summary>
+                        <div style={{ marginTop: '10px', padding: '10px', background: 'rgba(255,255,255,0.05)', borderRadius: '5px', fontSize: '0.9em' }}>
+                          <p style={{ margin: '5px 0' }}><strong>Bölüm:</strong> {app.student?.department || 'Belirtilmemiş'}</p>
+                          <p style={{ margin: '5px 0' }}><strong>Ön Yazı:</strong> {app.student?.bio || 'Belirtilmemiş'}</p>
+                          <p style={{ margin: '5px 0' }}><strong>Doğum Tarihi:</strong> {app.student?.birth_date ? new Date(app.student.birth_date).toLocaleDateString('tr-TR') : 'Belirtilmemiş'}</p>
+                          <p style={{ margin: '5px 0' }}><strong>Askerlik Durumu:</strong> {app.student?.military_status || 'Belirtilmemiş'}</p>
+                          <p style={{ margin: '5px 0' }}><strong>Sürücü Belgesi:</strong> {app.student?.driver_license || 'Belirtilmemiş'}</p>
+                          <p style={{ margin: '5px 0' }}><strong>Medeni Durum:</strong> {app.student?.marital_status || 'Belirtilmemiş'}</p>
+                          <p style={{ margin: '5px 0' }}><strong>GitHub:</strong> {app.student?.github_url ? <a href={app.student.github_url} target="_blank" rel="noreferrer" style={{color: '#4CAF50'}}>{app.student.github_url}</a> : 'Yok'}</p>
+                          <p style={{ margin: '5px 0' }}><strong>LinkedIn:</strong> {app.student?.linkedin_url ? <a href={app.student.linkedin_url} target="_blank" rel="noreferrer" style={{color: '#4CAF50'}}>{app.student.linkedin_url}</a> : 'Yok'}</p>
+                        </div>
+                      </details>
 
                       {Object.keys(app.answers || {}).length > 0 && (
                         <details>

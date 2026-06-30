@@ -14,6 +14,10 @@ const Profile = () => {
     user_type: '',
     department: null,
     cv_url: '',
+    birth_date: '',
+    military_status: '',
+    driver_license: '',
+    marital_status: '',
     company_address: '',
     company_phone: '',
     company_email: '',
@@ -53,6 +57,10 @@ const Profile = () => {
           user_type: data.user_type || '',
           department: deptObj,
           cv_url: data.cv_url || '',
+          birth_date: data.birth_date || '',
+          military_status: data.military_status || '',
+          driver_license: data.driver_license || '',
+          marital_status: data.marital_status || '',
           company_address: data.company_address || '',
           company_phone: data.company_phone || '',
           company_email: data.company_email || '',
@@ -114,6 +122,10 @@ const Profile = () => {
           linkedin_url: profile.linkedin_url,
           department: profile.department ? profile.department.label : null,
           cv_url: profile.cv_url,
+          birth_date: profile.birth_date,
+          military_status: profile.military_status,
+          driver_license: profile.driver_license,
+          marital_status: profile.marital_status,
           company_address: profile.company_address,
           company_phone: profile.company_phone,
           company_email: profile.company_email,
@@ -187,14 +199,47 @@ const Profile = () => {
               <input type="text" id="skills" value={profile.skills} onChange={handleInputChange} required placeholder="Örn: React, Node.js, AutoCAD, İngilizce (Aralarına virgül koyun)" style={{ width: '100%', padding: '10px', borderRadius: '5px' }} />
             </div>
 
-            <div className="form-row" style={{ display: 'flex', gap: '15px', marginBottom: '15px' }}>
-              <div className="form-group" style={{ flex: 1 }}>
-                <label htmlFor="github_url" style={{ display: 'block', marginBottom: '5px' }}>GitHub / Portfolyo Linki</label>
-                <input type="url" id="github_url" value={profile.github_url} onChange={handleInputChange} placeholder="https://github.com/..." style={{ width: '100%', padding: '10px', borderRadius: '5px' }} />
+            <div className="form-row" style={{ display: 'flex', gap: '15px', marginBottom: '15px', flexWrap: 'wrap' }}>
+              <div className="form-group" style={{ flex: 1, minWidth: '200px' }}>
+                <label htmlFor="birth_date" style={{ display: 'block', marginBottom: '5px' }}>Doğum Tarihi</label>
+                <input type="date" id="birth_date" value={profile.birth_date} onChange={handleInputChange} style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid var(--border-color)', background: 'var(--bg-color)', color: 'var(--text-color)' }} />
               </div>
-              <div className="form-group" style={{ flex: 1 }}>
+              <div className="form-group" style={{ flex: 1, minWidth: '200px' }}>
+                <label htmlFor="military_status" style={{ display: 'block', marginBottom: '5px' }}>Askerlik Durumu</label>
+                <select id="military_status" value={profile.military_status} onChange={handleInputChange} style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid var(--border-color)', background: 'var(--bg-color)', color: 'var(--text-color)' }}>
+                  <option value="">Seçiniz...</option>
+                  <option value="Yapıldı">Yapıldı</option>
+                  <option value="Tecilli">Tecilli</option>
+                  <option value="Muaf">Muaf</option>
+                  <option value="Yapılmadı">Yapılmadı</option>
+                  <option value="Kadın (Muaf)">Kadın Aday (Muaf)</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="form-row" style={{ display: 'flex', gap: '15px', marginBottom: '15px', flexWrap: 'wrap' }}>
+              <div className="form-group" style={{ flex: 1, minWidth: '200px' }}>
+                <label htmlFor="driver_license" style={{ display: 'block', marginBottom: '5px' }}>Sürücü Belgesi</label>
+                <input type="text" id="driver_license" value={profile.driver_license} onChange={handleInputChange} placeholder="Örn: B Sınıfı (Yoksa boş bırakın)" style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid var(--border-color)', background: 'var(--bg-color)', color: 'var(--text-color)' }} />
+              </div>
+              <div className="form-group" style={{ flex: 1, minWidth: '200px' }}>
+                <label htmlFor="marital_status" style={{ display: 'block', marginBottom: '5px' }}>Medeni Durum</label>
+                <select id="marital_status" value={profile.marital_status} onChange={handleInputChange} style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid var(--border-color)', background: 'var(--bg-color)', color: 'var(--text-color)' }}>
+                  <option value="">Seçiniz...</option>
+                  <option value="Bekar">Bekar</option>
+                  <option value="Evli">Evli</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="form-row" style={{ display: 'flex', gap: '15px', marginBottom: '15px', flexWrap: 'wrap' }}>
+              <div className="form-group" style={{ flex: 1, minWidth: '200px' }}>
+                <label htmlFor="github_url" style={{ display: 'block', marginBottom: '5px' }}>GitHub / Portfolyo Linki</label>
+                <input type="url" id="github_url" value={profile.github_url} onChange={handleInputChange} placeholder="https://github.com/..." style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid var(--border-color)', background: 'var(--bg-color)', color: 'var(--text-color)' }} />
+              </div>
+              <div className="form-group" style={{ flex: 1, minWidth: '200px' }}>
                 <label htmlFor="linkedin_url" style={{ display: 'block', marginBottom: '5px' }}>LinkedIn Profil Linki</label>
-                <input type="url" id="linkedin_url" value={profile.linkedin_url} onChange={handleInputChange} placeholder="https://linkedin.com/in/..." style={{ width: '100%', padding: '10px', borderRadius: '5px' }} />
+                <input type="url" id="linkedin_url" value={profile.linkedin_url} onChange={handleInputChange} placeholder="https://linkedin.com/in/..." style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid var(--border-color)', background: 'var(--bg-color)', color: 'var(--text-color)' }} />
               </div>
             </div>
 
